@@ -1,0 +1,8 @@
+[gd_resource type="SpineSkeletonDataResource" load_steps=3 format=3 uid="uid://cmf4sxtyvqke1"]
+
+[ext_resource type="SpineAtlasResource" uid="uid://b88j8mcgy3war" path="res://Muelsyse/images/char/default/front/char_249_mlyss.atlas" id="1_k6tm6"]
+[ext_resource type="SpineSkeletonFileResource" uid="uid://dk16djlqgn2w4" path="res://Muelsyse/images/char/default/build/build_char_249_mlyss.skel" id="2_8gilv"]
+
+[resource]
+atlas_res = ExtResource("1_k6tm6")
+skeleton_file_res = ExtResource("2_8gilv")

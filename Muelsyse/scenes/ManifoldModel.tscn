@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://6styekfuro7t"]
+
+[ext_resource type="SpineSkeletonDataResource" uid="uid://xxyfr5ljss3h" path="res://Muelsyse/images/char/default/manifold/muelsyse_default_manifold.tres" id="1_umygm"]
+
+[node name="CcModel" type="Node2D"]
+
+[node name="Visuals" type="SpineSprite" parent="."]
+skeleton_data_res = ExtResource("1_umygm")
+update_mode = 1
+preview_skin = "Default"
+preview_animation = "A_Idle"
+preview_frame = false
+preview_time = 0.0
+unique_name_in_owner = true
+scale = Vector2(0.5, 0.5)
+
+[node name="Bounds" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 3
+anchors_preset = 0
+offset_left = -74.0
+offset_top = -123.0
+offset_right = 87.0
+offset_bottom = 20.61087
+
+[node name="IntentPos" type="Marker2D" parent="."]
+unique_name_in_owner = true
+position = Vector2(-2, -134)
+
+[node name="CenterPos" type="Marker2D" parent="."]
+unique_name_in_owner = true

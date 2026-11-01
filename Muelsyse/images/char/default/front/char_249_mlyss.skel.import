@@ -1,0 +1,14 @@
+[remap]
+
+importer="spine.skel"
+type="SpineSkeletonFileResource"
+uid="uid://glbww6nq8jbi"
+path="res://.godot/imported/char_249_mlyss.skel-1324fc6f72350043384df4ed49d8c590.spskel"
+
+[deps]
+
+source_file="res://Muelsyse/images/char/default/front/char_249_mlyss.skel"
+dest_files=["res://.godot/imported/char_249_mlyss.skel-1324fc6f72350043384df4ed49d8c590.spskel"]
+
+[params]
+

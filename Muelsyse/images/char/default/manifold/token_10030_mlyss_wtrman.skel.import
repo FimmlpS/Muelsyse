@@ -1,0 +1,14 @@
+[remap]
+
+importer="spine.skel"
+type="SpineSkeletonFileResource"
+uid="uid://46gjy3ftwyp6"
+path="res://.godot/imported/token_10030_mlyss_wtrman.skel-cc79ec48451fc40f43f6f323f910fb4e.spskel"
+
+[deps]
+
+source_file="res://Muelsyse/images/char/default/manifold/token_10030_mlyss_wtrman.skel"
+dest_files=["res://.godot/imported/token_10030_mlyss_wtrman.skel-cc79ec48451fc40f43f6f323f910fb4e.spskel"]
+
+[params]
+
