@@ -1,0 +1,9 @@
+{
+    "MUELSYSE-SOURCE_DROP.title": "源流之滴",
+    "MUELSYSE-SOURCE_DROP.description": "战斗的第1回合开始时，抽{Cards:diff()}张牌。",
+    "MUELSYSE-SOURCE_DROP.flavor": "一滴水也能映出整片海。",
+
+    "MUELSYSE-LIFE_CIRCLE.title": "生命吊坠",
+    "MUELSYSE-LIFE_CIRCLE.description": "战斗开始时召唤一个基础[gold]流形[/gold]，并获得4点[gold]润化[/gold]。\n每打出一张牌，获得1点[gold]润化[/gold]。\n回合结束时，每点未使用的[gold]能量[/gold]额外提供2点[gold]润化[/gold]。\n[gold]润化[/gold]达到16时召唤一个额外流形（至多4个），达到20时触发[gold]溯源[/gold]。",
+    "MUELSYSE-LIFE_CIRCLE.flavor": "命运啊，随水歌唱吧……"
+}
