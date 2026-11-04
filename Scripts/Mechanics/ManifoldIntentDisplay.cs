@@ -19,12 +19,13 @@ public partial class ManifoldIntentDisplay : Control
 
     private RichTextLabel _label = null!;
     private Creature? _manifold;
+    private Control? _anchor;
     private float _timer;
 
     public static void Attach(Creature manifold)
     {
         NCreature? creatureNode = NCombatRoom.Instance?.GetCreatureNode(manifold);
-        if (creatureNode == null || creatureNode.IntentContainer.GetNodeOrNull(DisplayName) != null)
+        if (creatureNode == null || creatureNode.GetNodeOrNull(DisplayName) != null)
         {
             return;
         }
@@ -35,7 +36,14 @@ public partial class ManifoldIntentDisplay : Control
             MouseFilter = MouseFilterEnum.Ignore
         };
         display._manifold = manifold;
-        creatureNode.IntentContainer.AddChildSafely(display);
+        display._anchor = creatureNode.IntentContainer;
+
+        // Deliberately a sibling of the intent container rather than a child of it:
+        // NCreature.UpdateIntent() prunes every IntentContainer child beyond the creature's intent
+        // count, and it runs on PrepareForNextTurn and every time a power is applied to the
+        // creature. A manifold has no intents of its own, so the pruning would delete this display.
+        // _Process mirrors the container's position so the number still follows UpdateBounds.
+        creatureNode.AddChildSafely(display);
     }
 
     public override void _Ready()
@@ -47,7 +55,7 @@ public partial class ManifoldIntentDisplay : Control
             AutowrapMode = TextServer.AutowrapMode.Off,
             MouseFilter = MouseFilterEnum.Ignore,
             Size = new Vector2(200f, 48f),
-            Position = new Vector2(-100f, -10f)
+            Position = new Vector2(-100f, -52f)
         };
         _label.AddThemeFontSizeOverride("normal_font_size", 30);
         _label.AddThemeConstantOverride("outline_size", 8);
@@ -58,6 +66,8 @@ public partial class ManifoldIntentDisplay : Control
 
     public override void _Process(double delta)
     {
+        FollowAnchor();
+
         _timer += (float)delta;
         if (_timer < RefreshInterval)
         {
@@ -66,6 +76,21 @@ public partial class ManifoldIntentDisplay : Control
 
         _timer = 0f;
         Refresh();
+    }
+
+    /// <summary>
+    /// Keeps the display where it used to sit as a child of the intent container. The container is a
+    /// centre-aligned HBoxContainer, so a zero-sized child is laid out at the horizontal centre of
+    /// the container, not at its top-left corner: mirror <c>Position + Size.X / 2</c>, not Position.
+    /// </summary>
+    private void FollowAnchor()
+    {
+        if (_anchor == null || !IsInstanceValid(_anchor))
+        {
+            return;
+        }
+
+        Position = _anchor.Position + new Vector2(_anchor.Size.X * 0.5f, 0f);
     }
 
     private void Refresh()

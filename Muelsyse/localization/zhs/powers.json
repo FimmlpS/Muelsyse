@@ -1,8 +1,4 @@
 {
-    "MUELSYSE-WATER_MIRROR_POWER.title": "水镜",
-    "MUELSYSE-WATER_MIRROR_POWER.description": "每当你打出一张攻击牌，获得2点[gold]格挡[/gold]。",
-    "MUELSYSE-WATER_MIRROR_POWER.smartDescription": "每当你打出一张攻击牌，获得{Amount}点[gold]格挡[/gold]。",
-
     "MUELSYSE-MANIFOLD_POWER.title": "流形",
     "MUELSYSE-MANIFOLD_POWER.description": "此流形单次承受伤害的上限由[gold]阈值[/gold]决定。",
     "MUELSYSE-MANIFOLD_POWER.smartDescription": "此流形单次承受伤害的上限为{Amount}×[gold]溯源[/gold]倍率。",
@@ -25,5 +21,25 @@
 
     "MUELSYSE-MANIFOLD_LINK_POWER.title": "流形共鸣",
     "MUELSYSE-MANIFOLD_LINK_POWER.description": "你的流形会为你承受攻击伤害。",
-    "MUELSYSE-MANIFOLD_LINK_POWER.smartDescription": "你的流形会为你承受攻击伤害。图标数字为所有流形的[gold]阈值[/gold]之和。"
+    "MUELSYSE-MANIFOLD_LINK_POWER.smartDescription": "你的流形会为你承受攻击伤害。图标数字为所有流形的[gold]阈值[/gold]之和。",
+
+    "MUELSYSE-RIPPLE_POWER.title": "生命涟漪",
+    "MUELSYSE-RIPPLE_POWER.description": "在你的回合结束时，每个[gold]流形[/gold]使你与其各获得[gold]格挡[/gold]。",
+    "MUELSYSE-RIPPLE_POWER.smartDescription": "在你的回合结束时，每个[gold]流形[/gold]使你与其各获得{Amount}点[gold]格挡[/gold]。",
+
+    "MUELSYSE-IT_IS_POWER.title": "祂在",
+    "MUELSYSE-IT_IS_POWER.description": "你受到的攻击伤害降低80%。",
+    "MUELSYSE-IT_IS_POWER.smartDescription": "你受到的攻击伤害降低80%，持续{Amount}回合。",
+
+    "MUELSYSE-SOIL_BACK_POWER.title": "土壤改造：回肥",
+    "MUELSYSE-SOIL_BACK_POWER.description": "本回合内，主原料在[gold]栽培[/gold]后不会[gold]失肥[/gold]，且耗能降低。",
+    "MUELSYSE-SOIL_BACK_POWER.smartDescription": "本回合内，主原料在[gold]栽培[/gold]后不会[gold]失肥[/gold]，且耗能降低{Amount}点。",
+
+    "MUELSYSE-SOIL_EXHAUST_POWER.title": "土壤改造：净化",
+    "MUELSYSE-SOIL_EXHAUST_POWER.description": "状态牌和诅咒牌可以作为[gold]枯竭[/gold]原料。",
+    "MUELSYSE-SOIL_EXHAUST_POWER.smartDescription": "状态牌和诅咒牌可以作为[gold]枯竭[/gold]原料；每因[gold]枯竭[/gold]消耗1张原料，抽{Amount}张牌。",
+
+    "MUELSYSE-ECOLOGICAL_COUPLING_POWER.title": "生态耦合",
+    "MUELSYSE-ECOLOGICAL_COUPLING_POWER.description": "之后召唤的流形复制会延迟消失。",
+    "MUELSYSE-ECOLOGICAL_COUPLING_POWER.smartDescription": "之后召唤的流形复制会延迟{Amount}个回合消失。"
 }

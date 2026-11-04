@@ -12,20 +12,20 @@ preview_animation = "B_Die"
 preview_frame = false
 preview_time = 0.0
 unique_name_in_owner = true
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.6, 0.6)
 
 [node name="Bounds" type="Control" parent="."]
 unique_name_in_owner = true
 layout_mode = 3
 anchors_preset = 0
-offset_left = -74.0
-offset_top = -123.0
-offset_right = 87.0
-offset_bottom = 20.61087
+offset_left = -88.8
+offset_top = -147.6
+offset_right = 104.4
+offset_bottom = 24.733044
 
 [node name="IntentPos" type="Marker2D" parent="."]
 unique_name_in_owner = true
-position = Vector2(-2, -134)
+position = Vector2(-2.4, -160.8)
 
 [node name="CenterPos" type="Marker2D" parent="."]
 unique_name_in_owner = true

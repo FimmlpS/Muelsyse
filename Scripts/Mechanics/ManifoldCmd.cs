@@ -105,6 +105,10 @@ public static class ManifoldCmd
         }
 
         basic = await PlayerCmd.AddPet<Manifold>(player);
+
+        // AddPet drops the pet next to the player first. Hide it and move it to its real slot right
+        // away, otherwise the summon animation plays at the placeholder spot before being teleported.
+        HidePet(basic);
         await CreatureCmd.SetMaxHp(basic, BasicMaxHp + link.HpBonus);
         await CreatureCmd.Heal(basic, basic.MaxHp);
         await PowerCmd.Apply<ManifoldRespawnPower>(
@@ -129,7 +133,10 @@ public static class ManifoldCmd
         Creature basic = Basic(player) ?? await SpawnBasic(choiceContext, player, cardSource);
         ManifoldLinkPower link = await EnsureLink(choiceContext, player);
 
+        turns += basic.GetPower<EcologicalCouplingPower>()?.Amount ?? 0;
+
         Creature extra = await PlayerCmd.AddPet<ManifoldCopy>(player);
+        HidePet(extra);
         await CreatureCmd.SetMaxHp(extra, basic.MaxHp);
         await CreatureCmd.Heal(extra, extra.MaxHp);
 
@@ -218,8 +225,16 @@ public static class ManifoldCmd
     private const float PetSpacingFactor = 0.7f;
 
     /// <summary>
+    /// Each extra manifold stands this much higher than the previous one. The health bar and the
+    /// power icons are wider than the gap between two sprites, so a flat row makes neighbouring
+    /// UI overlap; the staggered heights keep each manifold's bars and powers in their own band.
+    /// </summary>
+    private const float ExtraPetLift = 40f;
+
+    /// <summary>
     /// Places every manifold in a row to the right of the player, clear of the player's sprite,
-    /// re-enables their health bars and makes sure each one shows its attack intent.
+    /// re-enables their health bars and makes sure each one shows its attack intent. Extras are
+    /// lifted one step each so their UI does not sit on top of the previous manifold's.
     /// </summary>
     public static void ArrangeManifolds(Player player)
     {
@@ -229,6 +244,8 @@ public static class ManifoldCmd
         {
             return;
         }
+
+        List<Creature> extras = Extras(player).Where(extra => extra.IsAlive).ToList();
 
         float x = playerNode.Position.X + playerNode.Visuals.Bounds.Size.X * 0.5f + PetGapFromPlayer;
         float y = playerNode.Position.Y + 10f;
@@ -241,12 +258,32 @@ public static class ManifoldCmd
                 continue;
             }
 
+            int extraIndex = extras.IndexOf(manifold);
+            float lift = extraIndex < 0 ? 0f : ExtraPetLift * (extraIndex + 1);
+
             float width = node.Visuals.Bounds.Size.X;
-            node.Position = new Vector2(x + width * 0.5f, y);
+            node.Position = new Vector2(x + width * 0.5f, y - lift);
             x += width * PetSpacingFactor;
 
             node.ToggleIsInteractable(true);
             ManifoldIntentDisplay.Attach(manifold);
+        }
+    }
+
+    /// <summary>
+    /// Hides a freshly added pet and moves it straight to its final slot, before the summon
+    /// animation has a chance to play at the placeholder position next to the player.
+    /// </summary>
+    private static void HidePet(Creature pet)
+    {
+        if (pet.PetOwner is { } player)
+        {
+            ArrangeManifolds(player);
+        }
+
+        if (NCombatRoom.Instance?.GetCreatureNode(pet) is { } node)
+        {
+            node.Modulate = Colors.Transparent;
         }
     }
 
@@ -264,6 +301,11 @@ public static class ManifoldCmd
         }
 
         node.Modulate = Colors.Transparent;
+
+        // Restart the summon animation now that the pet stands in its real slot, so the whole
+        // "Start" clip plays in place instead of finishing at the placeholder and snapping over.
+        node.SetAnimationTrigger("Revive");
+
         Tween tween = node.CreateTween();
         tween.TweenProperty(node, "modulate", Colors.White, 0.35).SetDelay(0.05);
     }

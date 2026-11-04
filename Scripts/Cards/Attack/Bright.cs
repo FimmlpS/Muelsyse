@@ -15,7 +15,7 @@ namespace Muelsyse.Scripts.Cards.Attack;
 public class Bright : AbstractMuelsyseCard
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new TogetherDamageVar(4, ValueProp.Move)
+        new TogetherDamageVar(8, ValueProp.Move)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [MuelsyseKeywords.Together];

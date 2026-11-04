@@ -1,13 +1,4 @@
 {
-    "MUELSYSE-STRIKE.title": "打击",
-    "MUELSYSE-STRIKE.description": "造成{Damage:diff()}点伤害。",
-
-    "MUELSYSE-DEFEND.title": "防御",
-    "MUELSYSE-DEFEND.description": "获得{Block:diff()}点[gold]格挡[/gold]。",
-
-    "MUELSYSE-WATER_MIRROR.title": "水镜",
-    "MUELSYSE-WATER_MIRROR.description": "每当你打出一张攻击牌，获得{WaterMirrorPower:diff()}点[gold]格挡[/gold]。",
-
     "MUELSYSE-WATER_STRIKE.title": "水流打击",
     "MUELSYSE-WATER_STRIKE.description": "造成{Damage:diff()}点伤害。{IfUpgraded:show:\n[gold]首言[/gold]：获得1点[gold]润化[/gold]。|}",
 
@@ -55,5 +46,116 @@
 
     "MUELSYSE-CONDENSATE_WISH.title": "愿望凝结",
     "MUELSYSE-CONDENSATE_WISH.description": "造成{CalculatedDamage:diff()}点伤害（等于你所有流形的当前生命之和）。",
-    "MUELSYSE-CONDENSATE_WISH.flavor": "“愿望啊，请你凝结！”"
+    "MUELSYSE-CONDENSATE_WISH.flavor": "“愿望啊，请你凝结！”",
+
+    "MUELSYSE-SONG_OF_ROSE.title": "蔷薇之歌",
+    "MUELSYSE-SONG_OF_ROSE.description": "将{IfUpgraded:show:[gold]白蔷薇+[/gold]|[gold]白蔷薇[/gold]}在[gold]栽培[/gold]{Cultivate:diff()}后放入手中。",
+
+    "MUELSYSE-WORD_OF_FLOWER.title": "花语",
+    "MUELSYSE-WORD_OF_FLOWER.description": "[gold]枯竭[/gold]：获得{Water:diff()}点[gold]润化[/gold]。",
+
+    "MUELSYSE-VERDANT.title": "苍翠",
+    "MUELSYSE-VERDANT.description": "抽到时抽{Draw:diff()}张牌。\n[gold]养料[/gold]：格挡值+{IfUpgraded:show:4|2}。",
+
+    "MUELSYSE-POISON_IVY.title": "毒藤",
+    "MUELSYSE-POISON_IVY.description": "造成{Damage:diff()}点伤害。\n给予{Poison:diff()}层[gold]中毒[/gold]。\n[gold]养料[/gold]：攻击值+{Poison:diff()}。",
+
+    "MUELSYSE-SCATTER_SPORE.title": "散孢",
+    "MUELSYSE-SCATTER_SPORE.description": "造成{Damage:diff()}点伤害。\n抽到时复制自身。\n[gold]枯竭[/gold]。",
+
+    "MUELSYSE-ORCHID.title": "芳兰",
+    "MUELSYSE-ORCHID.description": "所有[gold]流形[/gold]获得{Threshold}点[gold]阈值[/gold]。\n[gold]养料[/gold]：攻击值-2，格挡值+{NutrientBlock:diff()}。",
+
+    "MUELSYSE-FINE_BLEND.title": "精调",
+    "MUELSYSE-FINE_BLEND.description": "获得{Energy:diff()}点[gold]能量[/gold]。\n[gold]养料[/gold]：耗能+1，攻击和格挡值提升{IfUpgraded:show:75|50}%。",
+
+    "MUELSYSE-REST.title": "小憩",
+    "MUELSYSE-REST.description": "获得{Block:diff()}点[gold]格挡[/gold]。\n下回合额外抽{Draw:diff()}张牌。",
+
+    "MUELSYSE-DEFOLIATION.title": "落叶",
+    "MUELSYSE-DEFOLIATION.description": "[gold]枯竭[/gold]：获得{Energy:diff()}点[gold]能量[/gold]。",
+
+    "MUELSYSE-SPRING_WORD.title": "春语",
+    "MUELSYSE-SPRING_WORD.description": "将{IfUpgraded:show:[gold]铃兰+[/gold]|[gold]铃兰[/gold]}在[gold]栽培[/gold]{Cultivate}后放入手中。\n主原料额外强化一次，然后被[gold]消耗[/gold]。",
+
+    "MUELSYSE-COMPOSITE_NUTRIENT.title": "复合型养料",
+    "MUELSYSE-COMPOSITE_NUTRIENT.description": "使所有[gold]失肥[/gold]手牌复原。{IfUpgraded:show:\n此牌也会复原。|}\n[gold]养料[/gold]：被栽培的牌打出时抽{NutrientDraw:diff()}张牌。",
+
+    "MUELSYSE-IRRIGATE.title": "灌溉",
+    "MUELSYSE-IRRIGATE.description": "获得{Block:diff()}点[gold]格挡[/gold]。\n[gold]养料[/gold]：被栽培的牌打出时获得{NutrientWater:diff()}点[gold]润化[/gold]。",
+
+    "MUELSYSE-REFLUX.title": "回流",
+    "MUELSYSE-REFLUX.description": "丢弃所有[gold]失肥[/gold]牌，然后抽取等量的牌。\n[gold]养料[/gold]：被栽培的牌打出时获得{NutrientEnergy:diff()}点[gold]能量[/gold]。",
+
+    "MUELSYSE-BORN_SHOOTS.title": "生枝",
+    "MUELSYSE-BORN_SHOOTS.description": "选择1张手牌，将其[gold]栽培[/gold]{Cultivate:diff()}后放回手中。",
+
+    "MUELSYSE-DREAM_BUBBLE.title": "化梦泡影",
+    "MUELSYSE-DREAM_BUBBLE.description": "将所有[gold]流形[/gold]的[gold]格挡[/gold]转移到你身上。\n[gold]养料[/gold]：格挡值提升{IfUpgraded:show:100|50}%。",
+
+    "MUELSYSE-DEEP_REFLECT.title": "深层反映",
+    "MUELSYSE-DEEP_REFLECT.description": "使手中耗能最高的一张牌在打出时获得1点[gold]能量[/gold]。\n打出后，此牌的耗能+1。",
+
+    "MUELSYSE-SPRUCE_IN_CAGE.title": "笼中云杉",
+    "MUELSYSE-SPRUCE_IN_CAGE.description": "抽{Draw:diff()}张牌。\n选择1张手牌，将其[gold]栽培[/gold]2后[gold]保留[/gold]在手中。\n结束你的回合。",
+
+    "MUELSYSE-CURSE_OF_SPIRIT.title": "精灵的诅咒",
+    "MUELSYSE-CURSE_OF_SPIRIT.description": "回复2点生命。\n当此牌从牌组中移除时，获得{MaxHp:diff()}点最大生命。",
+
+    "MUELSYSE-NIGHT_WISH.title": "夜愿",
+    "MUELSYSE-NIGHT_WISH.description": "{IfUpgraded:show:可以打出。\n|}当此牌进入抽牌堆后，抽{Draw:diff()}张牌。",
+
+    "MUELSYSE-RESPLENDENT.title": "璀璨",
+    "MUELSYSE-RESPLENDENT.description": "{IfUpgraded:show:可以打出。\n|}当此牌进入抽牌堆后，获得{Energy:diff()}点[gold]能量[/gold]。",
+
+    "MUELSYSE-ENDLESS_SPRING.title": "不竭之泉",
+    "MUELSYSE-ENDLESS_SPRING.description": "当此牌进入抽牌堆或作为[gold]栽培[/gold]原料后，获得{Water:diff()}点[gold]润化[/gold]。\n此牌不会[gold]失肥[/gold]。",
+
+    "MUELSYSE-SOURCE_TOGETHER.title": "溯途同归",
+    "MUELSYSE-SOURCE_TOGETHER.description": "获得{Water:diff()}X点[gold]润化[/gold]。",
+
+    "MUELSYSE-PLANT_A_STAR.title": "种一颗星星",
+    "MUELSYSE-PLANT_A_STAR.description": "将手牌抽至10张。\n将{IfUpgraded:show:[gold]举星+[/gold]|[gold]举星[/gold]}在[gold]栽培[/gold]{Cultivate}后放入抽牌堆。",
+
+    "MUELSYSE-SHALLOW_ADAPTION.title": "浅层非熵适应",
+    "MUELSYSE-SHALLOW_ADAPTION.description": "使手中所有牌在打出时抽1张牌并获得1点[gold]润化[/gold]。",
+
+    "MUELSYSE-ETERNAL_GREENFIELD.title": "永恒的绿地",
+    "MUELSYSE-ETERNAL_GREENFIELD.description": "[gold]养料[/gold]：攻击值和格挡值+{Growth:diff()}。\n作为原料后，此牌的数值+1。\n此牌不会[gold]失肥[/gold]。",
+
+    "MUELSYSE-END_TIME.title": "终末的岁月",
+    "MUELSYSE-END_TIME.description": "若弃牌堆少于10张牌，交换手牌和弃牌堆。\n将{IfUpgraded:show:[gold]紫颂+[/gold]|[gold]紫颂[/gold]}在[gold]栽培[/gold]{Cultivate}后放入手中。",
+
+    "MUELSYSE-UNKNOWN_FLUID.title": "不可知流体",
+    "MUELSYSE-UNKNOWN_FLUID.description": "造成{Damage:diff()}点伤害。\n[gold]养料[/gold]：耗能-1，攻击值+{NutrientAttack:diff()}。",
+
+    "MUELSYSE-STARTER.title": "始源",
+    "MUELSYSE-STARTER.description": "造成{CalculatedDamage:diff()}点伤害。\n弃牌堆每有1张牌，此牌伤害-4。",
+
+    "MUELSYSE-LIFE_RIPPLE.title": "生命涟漪",
+    "MUELSYSE-LIFE_RIPPLE.description": "在你的回合结束时，每个[gold]流形[/gold]使你与其各获得{BlockPerManifold:diff()}点[gold]格挡[/gold]。",
+
+    "MUELSYSE-ECOLOGICAL_COUPLING.title": "塑形：生态耦合",
+    "MUELSYSE-ECOLOGICAL_COUPLING.description": "[gold]塑形[/gold]：你的流形复制会延迟{Turns:diff()}个回合消失。",
+
+    "MUELSYSE-SOIL_BACK.title": "土壤改造：回肥",
+    "MUELSYSE-SOIL_BACK.description": "[gold]栽培[/gold]后，主原料不再[gold]失肥[/gold]，且本回合耗能-1。",
+
+    "MUELSYSE-SOIL_EXHAUST.title": "土壤改造：净化",
+    "MUELSYSE-SOIL_EXHAUST.description": "[gold]栽培[/gold]时，状态牌和诅咒牌获得[gold]枯竭[/gold]效果。\n每有1张原料因[gold]枯竭[/gold]被消耗，抽1张牌。",
+
+    "MUELSYSE-IT_IS.title": "祂在",
+    "MUELSYSE-IT_IS.description": "持续{Turns:diff()}回合，你受到的攻击伤害降低80%。",
+
+    "MUELSYSE-WHITE_ROSE.title": "白蔷薇",
+    "MUELSYSE-WHITE_ROSE.description": "造成{Damage:diff()}点伤害。\n获得{Block:diff()}点[gold]格挡[/gold]。",
+
+    "MUELSYSE-LIFT_STAR.title": "举星",
+    "MUELSYSE-LIFT_STAR.description": "对所有敌人造成{Damage:diff()}点伤害。\n你额外给予{Weak:diff()}层[gold]虚弱[/gold]。",
+
+    "MUELSYSE-SUZURAN.title": "铃兰",
+    "MUELSYSE-SUZURAN.description": "造成{Damage:diff()}点伤害。{IfUpgraded:show:\n造成{Block}点伤害。|}",
+
+    "MUELSYSE-CHORUS_FLOWER.title": "紫颂",
+    "MUELSYSE-CHORUS_FLOWER.description": "重复{CalculatedRepeat:diff()}次：打出抽牌堆中随机牌的复制。\n攻击值强化会提高此数字。"
 }

@@ -32,13 +32,25 @@ public class ManifoldLinkPower : AbstractMuelsysePower
 
     public override PowerType Type => PowerType.Buff;
 
-    public override PowerStackType StackType => PowerStackType.Single;
+    public override PowerStackType StackType => PowerStackType.Counter;
 
     public override int DisplayAmount => Owner.Player == null ? 0 : ManifoldCmd.TotalThreshold(Owner.Player);
 
     public void RefreshDisplay()
     {
         InvokeDisplayAmountChanged();
+    }
+
+    /// <summary>Keeps the displayed total threshold in sync when a manifold's level or 溯源 changes.</summary>
+    public override Task AfterPowerAmountChanged(PlayerChoiceContext choiceContext, PowerModel power,
+        decimal amount, Creature? applier, CardModel? cardSource)
+    {
+        if (power is ManifoldPower or SourcePower)
+        {
+            RefreshDisplay();
+        }
+
+        return Task.CompletedTask;
     }
 
     public override decimal ModifyHpLostBeforeOsty(Creature target, decimal amount, ValueProp props,
@@ -98,11 +110,40 @@ public class ManifoldLinkPower : AbstractMuelsysePower
                 continue;
             }
 
-            await CreatureCmd.Damage(choiceContext, manifold, amount, ValueProp.Move | ValueProp.Unpowered,
-                dealer, cardSource, null);
+            await DamageManifold(choiceContext, manifold, amount, dealer, cardSource);
         }
 
         InvokeDisplayAmountChanged();
+    }
+
+    /// <summary>
+    /// Damages a manifold with its own block resolved first, then its HP.
+    /// <para>
+    /// <see cref="CreatureCmd.Damage"/> charges a pet's damage to <c>target.PetOwner.Creature</c>'s
+    /// block (see its <c>DamageBlockInternal</c> call), so a plain damage call would spend the
+    /// player's block a second time and ignore the manifold's own block entirely. The manifold's
+    /// block is therefore spent here by hand, and the remainder is routed through the damage
+    /// pipeline as <see cref="ValueProp.Unblockable"/> so the engine does not take the player's
+    /// block for it.
+    /// </para>
+    /// </summary>
+    private static async Task DamageManifold(PlayerChoiceContext choiceContext, Creature manifold, decimal amount,
+        Creature? dealer, CardModel? cardSource)
+    {
+        if (manifold.Block > 0)
+        {
+            decimal blocked = Math.Min(manifold.Block, amount);
+            await CreatureCmd.LoseBlock(choiceContext, manifold, blocked, dealer);
+            amount -= blocked;
+        }
+
+        if (amount <= 0)
+        {
+            return;
+        }
+
+        await CreatureCmd.Damage(choiceContext, manifold, amount,
+            ValueProp.Move | ValueProp.Unpowered | ValueProp.Unblockable, dealer, cardSource, null);
     }
 
     public override async Task AfterCardPlayed(PlayerChoiceContext choiceContext, CardPlay cardPlay)

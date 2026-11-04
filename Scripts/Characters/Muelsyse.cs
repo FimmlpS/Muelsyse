@@ -20,7 +20,7 @@ public class Muelsyse : PlaceholderCharacterModel
 
     public override CharacterGender Gender => CharacterGender.Feminine;
 
-    public override int StartingHp => 75;
+    public override int StartingHp => 60;
 
     public override string CustomVisualPath => "res://Muelsyse/scenes/MuelsyseModel.tscn";
     public override string CustomIconTexturePath => "res://Muelsyse/images/icon/character_icon_muelsyse.png";
@@ -46,7 +46,8 @@ public class Muelsyse : PlaceholderCharacterModel
         ModelDb.Card<WaterDefend>(),
         ModelDb.Card<WaterDefend>(),
         ModelDb.Card<WaterDefend>(),
-        ModelDb.Card<GraduallyWater>()
+        ModelDb.Card<SongOfRose>(),
+        ModelDb.Card<WordOfFlower>(),
     ];
 
     public override IReadOnlyList<RelicModel> StartingRelics => [

@@ -1,31 +1,30 @@
 {
     "MUELSYSE-MANIFOLD.title": "流形",
     "MUELSYSE-MANIFOLD.description": "由你控制的召唤物，生命为5。你受到攻击时，流形会替你承受伤害，每个流形单次最多承受其[gold]阈值[/gold]点。基础流形死亡后会在2个回合后复活；额外流形会在对应回合结束后消失。",
-
     "MUELSYSE-TOGETHER.title": "协同",
-    "MUELSYSE-TOGETHER.description": "此牌的攻击值已减半。打出后，你所有的流形会依次跟随你执行此牌的效果。获得格挡时，每个流形单次获得的格挡不超过其[gold]阈值[/gold]。",
-
+    "MUELSYSE-TOGETHER.description": "此牌的伤害与给予的层数减半。打出后，所有[gold]流形[/gold]会依次执行此牌的伤害/格挡和给予效果。",
     "MUELSYSE-WATER.title": "润化",
     "MUELSYSE-WATER.description": "使生命吊坠的计数增加。计数达到16时召唤一个[gold]流形[/gold]；达到20时触发[gold]溯源[/gold]。",
-
     "MUELSYSE-SOURCE.title": "溯源",
     "MUELSYSE-SOURCE.description": "生命吊坠计数达到20时，基础流形的生命上限提升20点并恢复全部生命，[gold]阈值[/gold]效果提升至5倍（可叠加）。",
-
     "MUELSYSE-THRESHOLD.title": "阈值",
     "MUELSYSE-THRESHOLD.description": "流形单次承受伤害或获得[gold]格挡[/gold]的上限。",
-
     "MUELSYSE-MOLDING.title": "塑形",
     "MUELSYSE-MOLDING.description": "召唤新的[gold]流形[/gold]时，此效果会一并赋予它们。",
-
     "MUELSYSE-ABSORB.title": "汲取",
     "MUELSYSE-ABSORB.description": "使目标失去对应数值的[gold]力量[/gold]并由汲取者获得，在你的下个回合开始时归还。不会使目标的力量低于0。",
-
     "MUELSYSE-DISAPPEAR.title": "消失",
     "MUELSYSE-DISAPPEAR.description": "在对应回合结束后死亡。",
-
     "MUELSYSE-RESPAWN.title": "再现",
     "MUELSYSE-RESPAWN.description": "死亡后会在对应回合结束后以满血复活。",
-
     "MUELSYSE-FIRST_WORD.title": "首言",
-    "MUELSYSE-FIRST_WORD.description": "打出一定次数后，该语句不再生效。"
+    "MUELSYSE-FIRST_WORD.description": "打出一定次数后，该语句不再生效。",
+    "MUELSYSE-CULTIVATE.title": "栽培",
+    "MUELSYSE-CULTIVATE.description": "主原料：选择1张手牌。副原料：自动填充X张其他牌。每张原料强化目标牌1点攻击和格挡值。",
+    "MUELSYSE-NUTRIENT.title": "养料",
+    "MUELSYSE-NUTRIENT.description": "发起栽培后会被优先自动填充；其栽培效果同样作用于目标牌。",
+    "MUELSYSE-EXHAUST_MATERIAL.title": "枯竭",
+    "MUELSYSE-EXHAUST_MATERIAL.description": "作为栽培原料时不占用上限，携带的栽培效果会给予目标牌，栽培结束后消耗。",
+    "MUELSYSE-DRY.title": "失肥",
+    "MUELSYSE-DRY.description": "这张牌不再可作为栽培原料。"
 }

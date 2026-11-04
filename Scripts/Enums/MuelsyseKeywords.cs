@@ -44,4 +44,20 @@ public class MuelsyseKeywords
     [CustomEnum("FIRST_WORD")]
     [KeywordProperties(AutoKeywordPosition.None)]
     public static CardKeyword FirstWord;
+
+    [CustomEnum("CULTIVATE")]
+    [KeywordProperties(AutoKeywordPosition.Before)]
+    public static CardKeyword Cultivate;
+
+    [CustomEnum("NUTRIENT")]
+    [KeywordProperties(AutoKeywordPosition.None)]
+    public static CardKeyword Nutrient;
+
+    [CustomEnum("EXHAUST_MATERIAL")]
+    [KeywordProperties(AutoKeywordPosition.None)]
+    public static CardKeyword ExhaustMaterial;
+
+    [CustomEnum("DRY")]
+    [KeywordProperties(AutoKeywordPosition.None)]
+    public static CardKeyword Dry;
 }

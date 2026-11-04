@@ -18,7 +18,7 @@ public class WaterStrikeO : AbstractMuelsyseCard
     protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new TogetherDamageVar(5, ValueProp.Move),
+        new TogetherDamageVar(10, ValueProp.Move),
         new DynamicVar("Water", 3)
     ];
 
