@@ -1,2 +1,19 @@
 {
+    "THE_ARCHITECT.CONTINUE": "继续",
+    "THE_ARCHITECT.RESPOND": "回答",
+    "THE_ARCHITECT.talk.MUELSYSE-MUELSYSE.0-0r.ancient": "水会流走，会蒸发，会忘记自己曾是什么。你也是一样。",
+    "THE_ARCHITECT.talk.MUELSYSE-MUELSYSE.0-0r.next": "注视",
+    "THE_ARCHITECT.talk.MUELSYSE-MUELSYSE.0-1r.char": "但水总会回来——带着同样的形状。",
+    "THE_ARCHITECT.talk.MUELSYSE-MUELSYSE.0-1r.next": "抬手",
+    "THE_ARCHITECT.talk.MUELSYSE-MUELSYSE.0-attack": "Both",
+    "THE_ARCHITECT.talk.MUELSYSE-MUELSYSE.1-0r.ancient": "你分出那么多“自己”，最后究竟哪一个才算数？",
+    "THE_ARCHITECT.talk.MUELSYSE-MUELSYSE.1-0r.next": "注视",
+    "THE_ARCHITECT.talk.MUELSYSE-MUELSYSE.1-1r.char": "每一个都算数。这正是我和你的不同。",
+    "THE_ARCHITECT.talk.MUELSYSE-MUELSYSE.1-1r.next": "抬手",
+    "THE_ARCHITECT.talk.MUELSYSE-MUELSYSE.1-attack": "Both",
+    "THE_ARCHITECT.talk.MUELSYSE-MUELSYSE.2-0r.ancient": "高塔里没有土壤。你带来的那些芽，注定只能死在黑暗里。",
+    "THE_ARCHITECT.talk.MUELSYSE-MUELSYSE.2-0r.next": "注视",
+    "THE_ARCHITECT.talk.MUELSYSE-MUELSYSE.2-1r.char": "那就让它们先学会在黑暗里生长。",
+    "THE_ARCHITECT.talk.MUELSYSE-MUELSYSE.2-1r.next": "抬手",
+    "THE_ARCHITECT.talk.MUELSYSE-MUELSYSE.2-attack": "Both"
 }

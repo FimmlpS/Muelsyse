@@ -1,4 +1,8 @@
 {
     "CULTIVATE_MAIN": "选择1张手牌作为[gold]主原料[/gold]。",
-    "CULTIVATE_TARGET": "选择1张牌来[gold]栽培[/gold]。"
+    "CULTIVATE_TARGET": "选择1张牌来[gold]栽培[/gold]。",
+    "STROLL_SELECT": "选择任意张牌洗回抽牌堆。",
+    "MODE_CULTIVATE_SELECT": "选择1张[gold]栽培[/gold]牌放入手中。",
+    "POLLEN_SELECT": "选择1张手牌携带[gold]花粉[/gold]。",
+    "LIVING_ECHO_SELECT": "选择至多[blue]{Amount}[/blue]张手牌[gold]消耗[/gold]。"
 }

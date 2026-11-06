@@ -60,8 +60,8 @@ public class CultivateModifier : CardModifier
 
     public bool HasAny => _values.Values.Any(value => value != 0);
 
-    /// <summary>Applies the block/cost part of a bonus to one concrete card instance.</summary>
-    public static void BakePermanentStats(CardModel card, int blockDelta, int costDelta)
+    /// <summary>Applies the block/cost part of a bonus to one concrete card instance for this combat.</summary>
+    public static void BakeStats(CardModel card, int blockDelta, int costDelta)
     {
         if (blockDelta != 0 && card.DynamicVars.TryGetValue("Block", out DynamicVar? block))
         {
@@ -85,7 +85,7 @@ public class CultivateModifier : CardModifier
         base.OnDowngrade();
         if (Owner != null)
         {
-            BakePermanentStats(Owner, Block, Cost);
+            BakeStats(Owner, Block, Cost);
         }
     }
 

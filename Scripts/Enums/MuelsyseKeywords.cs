@@ -41,9 +41,13 @@ public class MuelsyseKeywords
     [KeywordProperties(AutoKeywordPosition.None)]
     public static CardKeyword Respawn;
 
-    [CustomEnum("FIRST_WORD")]
+    [CustomEnum("STROLL")]
+    [KeywordProperties(AutoKeywordPosition.Before)]
+    public static CardKeyword Stroll;
+
+    [CustomEnum("POLLEN")]
     [KeywordProperties(AutoKeywordPosition.None)]
-    public static CardKeyword FirstWord;
+    public static CardKeyword Pollen;
 
     [CustomEnum("CULTIVATE")]
     [KeywordProperties(AutoKeywordPosition.Before)]

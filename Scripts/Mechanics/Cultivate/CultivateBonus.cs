@@ -41,18 +41,15 @@ public sealed class CultivateBonus
     public decimal Cure { get; private set; }
     public decimal WaterGrow { get; private set; }
 
-    /// <summary>Every material also strengthens the target by one attack and one block.</summary>
+    /// <summary>
+    /// Every material also strengthens the target by one attack and one block. Cards without a
+    /// printed damage/block value still record the stacks: the icon row shows them, and they can
+    /// be carried onto another card when this one is consumed as a material.
+    /// </summary>
     public void AddMaterialBase(int repetitions = 1)
     {
-        if (_hasAttack)
-        {
-            _attack += repetitions;
-        }
-
-        if (_hasBlock)
-        {
-            _block += repetitions;
-        }
+        _attack += repetitions;
+        _block += repetitions;
     }
 
     public void Apply(CultivateCalculator calculator)
@@ -60,16 +57,10 @@ public sealed class CultivateBonus
         switch (calculator.Aim)
         {
             case CultivateAim.Attack:
-                if (_hasAttack)
-                {
-                    _attack = Next(_attack, calculator);
-                }
+                _attack = Next(_attack, calculator, _hasAttack);
                 break;
             case CultivateAim.Block:
-                if (_hasBlock)
-                {
-                    _block = Next(_block, calculator);
-                }
+                _block = Next(_block, calculator, _hasBlock);
                 break;
             case CultivateAim.Cost:
                 if (_hasCost)
@@ -104,6 +95,16 @@ public sealed class CultivateBonus
     /// <summary>Copies the carried effects of a 枯竭 material onto this bonus.</summary>
     public void Carry(CultivateModifier source)
     {
+        if (source.Attack != 0)
+        {
+            Apply(CultivateCalculator.Add(CultivateAim.Attack, source.Attack));
+        }
+
+        if (source.Block != 0)
+        {
+            Apply(CultivateCalculator.Add(CultivateAim.Block, source.Block));
+        }
+
         Draw += source.Draw;
         Energy += source.Energy;
         Water += source.Water;
@@ -152,6 +153,20 @@ public sealed class CultivateBonus
 
         value = 0m;
         return false;
+    }
+
+    /// <summary>
+    /// A card without a printed attack/block value has nothing to scale, so a multiplicative
+    /// calculator degrades to a flat addition there — otherwise ×2 on a 0 shows no icon at all.
+    /// </summary>
+    private static decimal Next(decimal current, CultivateCalculator calculator, bool hasBase)
+    {
+        if (!calculator.IsMultiplicative)
+        {
+            return current + calculator.Amount;
+        }
+
+        return hasBase ? current * calculator.Amount : current + calculator.Amount;
     }
 
     private static decimal Next(decimal current, CultivateCalculator calculator)

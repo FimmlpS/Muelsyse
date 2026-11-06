@@ -1,4 +1,4 @@
-using BaseLib.Utils;
+﻿using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -13,7 +13,7 @@ namespace Muelsyse.Scripts.Cards.Skill;
 
 /// <summary>春语: cultivates a 铃兰, doubling the main material.</summary>
 [Pool(typeof(MuelsyseCardPool))]
-public class SpringWord : AbstractMuelsyseCard
+public class SpringWord : AbstractMuelsyseCard, ICultivateCard
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DynamicVar("Cultivate", 1)
@@ -21,7 +21,7 @@ public class SpringWord : AbstractMuelsyseCard
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [
         HoverTipFactory.FromKeyword(MuelsyseKeywords.Cultivate),
-        .. HoverTipFactory.FromCardWithCardHoverTips<Suzuran>()
+        .. HoverTipFactory.FromCardWithCardHoverTips<Suzuran>(IsUpgraded)
     ];
 
     public SpringWord() : base(1, CardType.Skill, CardRarity.Common, TargetType.None)

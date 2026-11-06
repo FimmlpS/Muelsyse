@@ -18,8 +18,8 @@ public class Irrigate : AbstractMuelsyseCard, ICultivateNutrient
     public override bool GainsBlock => true;
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new BlockVar(16, ValueProp.Move),
-        new DynamicVar("NutrientWater", 3)
+        new BlockVar(12, ValueProp.Move),
+        new DynamicVar("NutrientWater", 2)
     ];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [
@@ -42,7 +42,7 @@ public class Irrigate : AbstractMuelsyseCard, ICultivateNutrient
 
     protected override void OnUpgrade()
     {
-        DynamicVars.Block.UpgradeValueBy(6);
+        DynamicVars.Block.UpgradeValueBy(4);
         DynamicVars["NutrientWater"].UpgradeValueBy(2);
     }
 }

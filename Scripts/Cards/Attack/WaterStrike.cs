@@ -15,26 +15,21 @@ namespace Muelsyse.Scripts.Cards.Attack;
 [Pool(typeof(MuelsyseCardPool))]
 public class WaterStrike : AbstractMuelsyseCard
 {
-    private int _firstWord;
+    public const string FirstWordKey = "FirstWord";
 
     protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new TogetherDamageVar(6, ValueProp.Move)
+        new TogetherDamageVar(6, ValueProp.Move),
+        new DynamicVar(FirstWordKey, 0)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [MuelsyseKeywords.Together];
 
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => IsUpgraded
-        ? [
-            HoverTipFactory.FromKeyword(MuelsyseKeywords.Together),
-            HoverTipFactory.FromKeyword(MuelsyseKeywords.Water),
-            HoverTipFactory.FromKeyword(MuelsyseKeywords.FirstWord)
-        ]
-        : [
-            HoverTipFactory.FromKeyword(MuelsyseKeywords.Together),
-            HoverTipFactory.FromKeyword(MuelsyseKeywords.Water)
-        ];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [
+        HoverTipFactory.FromKeyword(MuelsyseKeywords.Together),
+        HoverTipFactory.FromKeyword(MuelsyseKeywords.Water)
+    ];
 
     public WaterStrike() : base(1, CardType.Attack, CardRarity.Basic, TargetType.AnyEnemy)
     {
@@ -42,7 +37,7 @@ public class WaterStrike : AbstractMuelsyseCard
 
     public override Task BeforeCombatStart()
     {
-        _firstWord = IsUpgraded ? 1 : 0;
+        DynamicVars[FirstWordKey].BaseValue = IsUpgraded ? 1 : 0;
         return Task.CompletedTask;
     }
 
@@ -53,9 +48,9 @@ public class WaterStrike : AbstractMuelsyseCard
             .Targeting(cardPlay.Target)
             .Execute(choiceContext);
 
-        if (_firstWord > 0)
+        if (DynamicVars[FirstWordKey].IntValue > 0)
         {
-            _firstWord--;
+            DynamicVars[FirstWordKey].BaseValue -= 1;
             await LifeCircle.AddWater(choiceContext, Owner, 1, this);
         }
     }
@@ -63,6 +58,6 @@ public class WaterStrike : AbstractMuelsyseCard
     protected override void OnUpgrade()
     {
         DynamicVars.Damage.UpgradeValueBy(2);
-        _firstWord = 1;
+        DynamicVars[FirstWordKey].BaseValue = 1;
     }
 }

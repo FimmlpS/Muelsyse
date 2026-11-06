@@ -14,8 +14,11 @@ namespace Muelsyse.Scripts.Cards.Attack;
 [Pool(typeof(MuelsyseCardPool))]
 public class CondensateWish : AbstractMuelsyseCard
 {
+    // The damage is the health the manifolds have already lost: 溯源 raises their maximum health,
+    // so it still grows with the water engine, but the card now cashes in damage taken instead of
+    // selling the same health twice.
     protected override IEnumerable<DynamicVar> CanonicalVars =>
-        MakeCalculatedDamage(0, (card, _) => card.Owner == null ? 0 : ManifoldCmd.AliveHp(card.Owner!));
+        MakeCalculatedDamage(0, (card, _) => card.Owner == null ? 0 : ManifoldCmd.AliveLostHp(card.Owner!));
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [
         HoverTipFactory.FromKeyword(MuelsyseKeywords.Manifold)

@@ -8,6 +8,7 @@ using MegaCrit.Sts2.Core.Entities.Relics;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Rooms;
+using Muelsyse.Scripts.Effects;
 using Muelsyse.Scripts.Mechanics;
 using Muelsyse.Scripts.Pools;
 using Muelsyse.Scripts.Powers;
@@ -36,15 +37,23 @@ public class LifeCircle : AbstractMuelsyseRelic
 
     public override int DisplayAmount => _counter;
 
+    /// <summary>The current 润化 count, read by the in-combat counter HUD.</summary>
+    public int WaterCount => _counter;
+
     public override async Task BeforeCombatStart()
     {
         _counter = StartingWater;
+        WaterLedger.Reset();
         InvokeDisplayAmountChanged();
 
         if (Owner.Creature.CombatState != null)
         {
             await ManifoldCmd.EnsureLink(new ThrowingPlayerChoiceContext(), Owner);
         }
+
+        // Attach early if the combat room has already built Muelsyse's node; otherwise the first
+        // player turn does it.
+        BubbleVfx.Attach(Owner.Creature);
     }
 
     public override async Task AfterPlayerTurnStart(PlayerChoiceContext choiceContext, Player player)
@@ -53,6 +62,9 @@ public class LifeCircle : AbstractMuelsyseRelic
         {
             return;
         }
+
+        // Muelsyse herself is always surrounded by rising water bubbles, not just her manifolds.
+        BubbleVfx.Attach(Owner.Creature);
 
         if (ManifoldCmd.Basic(player) == null)
         {

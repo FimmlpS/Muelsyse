@@ -1,4 +1,4 @@
-using BaseLib.Utils;
+﻿using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -13,7 +13,7 @@ namespace Muelsyse.Scripts.Cards.Skill;
 
 /// <summary>笼中云杉: draws, cultivates a card and keeps it, then ends the turn.</summary>
 [Pool(typeof(MuelsyseCardPool))]
-public class SpruceInCage : AbstractMuelsyseCard
+public class SpruceInCage : AbstractMuelsyseCard, ICultivateCard
 {
     private const int CultivateAmount = 2;
 
@@ -33,7 +33,7 @@ public class SpruceInCage : AbstractMuelsyseCard
     {
         await CardPileCmd.Draw(choiceContext, DynamicVars["Draw"].IntValue, Owner);
 
-        CardModel? target = await CultivateCmd.SelectTarget(choiceContext, Owner, this);
+        CardModel? target = await CultivateCmd.SelectTarget(choiceContext, Owner);
         if (target != null)
         {
             await CultivateCmd.Cultivate(choiceContext, Owner, target,

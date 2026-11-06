@@ -30,7 +30,7 @@ public class FineBlend : AbstractMuelsyseCard, ICultivateNutrient
         CultivateCalculator.Multiply(CultivateAim.Block, IsUpgraded ? 1.75m : 1.5m)
     ];
 
-    public FineBlend() : base(0, CardType.Skill, CardRarity.Common, TargetType.None)
+    public FineBlend() : base(0, CardType.Skill, CardRarity.Uncommon, TargetType.None)
     {
     }
 

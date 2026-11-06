@@ -89,6 +89,9 @@ public static class CultivateCardDisplay
         string signature = Signature(modifier, dry);
         if (strip != null && strip.HasMeta("signature") && strip.GetMeta("signature").AsString() == signature)
         {
+            // The row is already right; still re-anchor it, because the card may have been built
+            // before its title label had a layout (see StripOrigin).
+            strip.Position = StripOrigin(node, overlay);
             return;
         }
 
@@ -179,33 +182,42 @@ public static class CultivateCardDisplay
 
     /// <summary>
     /// A single row just above the card title, centered on it. The strip is parented to the overlay
-    /// container (whose origin is the card center), so the card-local offset is derived from the
-    /// title label's global rectangle.
+    /// container (whose origin is the card centre), so the offset is expressed in the overlay's own
+    /// layout space.
     /// </summary>
     private static Vector2 StripOrigin(NCard node, Control overlay)
     {
         Control? title = node.GetNodeOrNull<Control>("%TitleLabel");
-        if (title == null || !title.IsInsideTree() || !overlay.IsInsideTree())
+        if (title == null || !overlay.IsAncestorOf(title))
         {
             return new Vector2(IconOffsetX, -NCard.defaultSize.Y / 2f - IconSize - 4f - IconLift);
         }
 
-        Rect2 titleRect = title.GetGlobalRect();
-        Vector2 scale = node.GetGlobalTransform().Scale;
-        if (Mathf.IsZeroApprox(scale.X))
+        Vector2 center = TitleTopCentre(title, overlay);
+        return new Vector2(center.X + IconOffsetX, center.Y - IconSize - 4f - IconLift);
+    }
+
+    /// <summary>
+    /// The title's top-centre in the overlay's layout space. The scene offsets are summed instead
+    /// of reading the global rectangle: a card that happens to be hovered, tweened or scaled while
+    /// its row is (re)built has a rotated/scaled global rect, and the conversion used to land the
+    /// row a little too low — on top of the title banner. Layout offsets never move, so every card
+    /// gets the same spot.
+    /// </summary>
+    private static Vector2 TitleTopCentre(Control title, Control overlay)
+    {
+        Vector2 offset = new(title.Size.X / 2f, 0f);
+        for (Node? current = title; current != null && current != overlay; current = current.GetParent())
         {
-            scale.X = 1f;
+            if (current is not Control control)
+            {
+                break;
+            }
+
+            offset += control.Position;
         }
 
-        if (Mathf.IsZeroApprox(scale.Y))
-        {
-            scale.Y = 1f;
-        }
-
-        Vector2 overlayOrigin = overlay.GetGlobalRect().Position;
-        float x = (titleRect.Position.X + titleRect.Size.X / 2f - overlayOrigin.X) / scale.X + IconOffsetX;
-        float y = (titleRect.Position.Y - overlayOrigin.Y) / scale.Y - IconSize - 4f - IconLift;
-        return new Vector2(x, y);
+        return offset;
     }
 
     private static Control BuildDryStamp()

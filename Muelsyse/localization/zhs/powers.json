@@ -2,44 +2,61 @@
     "MUELSYSE-MANIFOLD_POWER.title": "流形",
     "MUELSYSE-MANIFOLD_POWER.description": "此流形单次承受伤害的上限由[gold]阈值[/gold]决定。",
     "MUELSYSE-MANIFOLD_POWER.smartDescription": "此流形单次承受伤害的上限为{Amount}×[gold]溯源[/gold]倍率。",
-
     "MUELSYSE-MANIFOLD_RESPAWN_POWER.title": "再现",
     "MUELSYSE-MANIFOLD_RESPAWN_POWER.description": "死亡后会在对应回合结束后以满血复活。",
     "MUELSYSE-MANIFOLD_RESPAWN_POWER.smartDescription": "死亡后会在{Amount}个回合后复活。",
-
     "MUELSYSE-MANIFOLD_DISAPPEAR_POWER.title": "消失",
     "MUELSYSE-MANIFOLD_DISAPPEAR_POWER.description": "会在对应回合结束后消失。",
     "MUELSYSE-MANIFOLD_DISAPPEAR_POWER.smartDescription": "会在{Amount}个回合后消失。",
-
     "MUELSYSE-SOURCE_POWER.title": "溯源",
     "MUELSYSE-SOURCE_POWER.description": "此流形的[gold]阈值[/gold]效果提升。",
     "MUELSYSE-SOURCE_POWER.smartDescription": "此流形的[gold]阈值[/gold]效果提升至{Amount}倍。",
-
     "MUELSYSE-CLEAN_WATER_POWER.title": "净水",
     "MUELSYSE-CLEAN_WATER_POWER.description": "攻击后[gold]汲取[/gold]目标的[gold]力量[/gold]，在你的下个回合开始时归还。",
     "MUELSYSE-CLEAN_WATER_POWER.smartDescription": "攻击后[gold]汲取[/gold]目标{Amount}点[gold]力量[/gold]，在你的下个回合开始时归还。",
-
     "MUELSYSE-MANIFOLD_LINK_POWER.title": "流形共鸣",
     "MUELSYSE-MANIFOLD_LINK_POWER.description": "你的流形会为你承受攻击伤害。",
     "MUELSYSE-MANIFOLD_LINK_POWER.smartDescription": "你的流形会为你承受攻击伤害。图标数字为所有流形的[gold]阈值[/gold]之和。",
-
     "MUELSYSE-RIPPLE_POWER.title": "生命涟漪",
     "MUELSYSE-RIPPLE_POWER.description": "在你的回合结束时，每个[gold]流形[/gold]使你与其各获得[gold]格挡[/gold]。",
     "MUELSYSE-RIPPLE_POWER.smartDescription": "在你的回合结束时，每个[gold]流形[/gold]使你与其各获得{Amount}点[gold]格挡[/gold]。",
-
     "MUELSYSE-IT_IS_POWER.title": "祂在",
     "MUELSYSE-IT_IS_POWER.description": "你受到的攻击伤害降低80%。",
     "MUELSYSE-IT_IS_POWER.smartDescription": "你受到的攻击伤害降低80%，持续{Amount}回合。",
-
     "MUELSYSE-SOIL_BACK_POWER.title": "土壤改造：回肥",
     "MUELSYSE-SOIL_BACK_POWER.description": "本回合内，主原料在[gold]栽培[/gold]后不会[gold]失肥[/gold]，且耗能降低。",
     "MUELSYSE-SOIL_BACK_POWER.smartDescription": "本回合内，主原料在[gold]栽培[/gold]后不会[gold]失肥[/gold]，且耗能降低{Amount}点。",
-
     "MUELSYSE-SOIL_EXHAUST_POWER.title": "土壤改造：净化",
     "MUELSYSE-SOIL_EXHAUST_POWER.description": "状态牌和诅咒牌可以作为[gold]枯竭[/gold]原料。",
     "MUELSYSE-SOIL_EXHAUST_POWER.smartDescription": "状态牌和诅咒牌可以作为[gold]枯竭[/gold]原料；每因[gold]枯竭[/gold]消耗1张原料，抽{Amount}张牌。",
-
     "MUELSYSE-ECOLOGICAL_COUPLING_POWER.title": "生态耦合",
     "MUELSYSE-ECOLOGICAL_COUPLING_POWER.description": "之后召唤的流形复制会延迟消失。",
-    "MUELSYSE-ECOLOGICAL_COUPLING_POWER.smartDescription": "之后召唤的流形复制会延迟{Amount}个回合消失。"
+    "MUELSYSE-ECOLOGICAL_COUPLING_POWER.smartDescription": "之后召唤的流形复制会延迟{Amount}个回合消失。",
+    "MUELSYSE-DUST_POWER.title": "遗尘",
+    "MUELSYSE-DUST_POWER.description": "你[gold]漫步[/gold]时，额外加入等同于层数的随机牌到选择中，其耗能为0；未选择的牌会消失。",
+    "MUELSYSE-DUST_POWER.smartDescription": "你[gold]漫步[/gold]时，额外加入{Amount}张随机牌到选择中，其耗能为0；未选择的牌会消失。",
+    "MUELSYSE-REVIVE_POWER.title": "苏生",
+    "MUELSYSE-REVIVE_POWER.description": "当一张牌因[gold]漫步[/gold]进入抽牌堆后，你获得等同于层数的[gold]格挡[/gold]。",
+    "MUELSYSE-REVIVE_POWER.smartDescription": "当一张牌因[gold]漫步[/gold]进入抽牌堆后，你获得{Amount}点[gold]格挡[/gold]。",
+    "MUELSYSE-SOURCE_OF_LIFE_POWER.title": "生命之源",
+    "MUELSYSE-SOURCE_OF_LIFE_POWER.description": "回合开始时，将等同于层数的[gold]水+[/gold]放入手中。",
+    "MUELSYSE-SOURCE_OF_LIFE_POWER.smartDescription": "回合开始时，将{Amount}张[gold]水+[/gold]放入手中。",
+    "MUELSYSE-UNCERTAIN_FORM_POWER.title": "不定形态",
+    "MUELSYSE-UNCERTAIN_FORM_POWER.description": "回合开始时[gold]漫步[/gold]等同于层数的牌。未选择的牌被[gold]消耗[/gold]，并抽1张牌。",
+    "MUELSYSE-UNCERTAIN_FORM_POWER.smartDescription": "回合开始时[gold]漫步[/gold]{Amount}。未选择的牌被[gold]消耗[/gold]，并抽1张牌。",
+    "MUELSYSE-SOIL_SPREAD_POWER.title": "土壤改造：风花",
+    "MUELSYSE-SOIL_SPREAD_POWER.description": "[gold]栽培[/gold]时，使目标牌额外携带等同于层数的随机[gold]花粉[/gold]。",
+    "MUELSYSE-SOIL_SPREAD_POWER.smartDescription": "[gold]栽培[/gold]时，使目标牌额外携带{Amount}个随机[gold]花粉[/gold]。",
+    "MUELSYSE-FLOWER_SPREAD_POWER.title": "花粉栽培：弥散",
+    "MUELSYSE-FLOWER_SPREAD_POWER.description": "受到攻击后，对所有敌人造成等同于层数的伤害。每回合层数减半。",
+    "MUELSYSE-FLOWER_SPREAD_POWER.smartDescription": "受到攻击后，对所有敌人造成{Amount}点伤害。每回合层数减半。",
+    "MUELSYSE-FLOWER_PARASITISM_POWER.title": "花粉栽培：寄生",
+    "MUELSYSE-FLOWER_PARASITISM_POWER.description": "受到攻击后，伤害来源获得等同于层数的[gold]格挡[/gold]。每回合层数减半。",
+    "MUELSYSE-FLOWER_PARASITISM_POWER.smartDescription": "受到攻击后，伤害来源获得{Amount}点[gold]格挡[/gold]。每回合层数减半。",
+    "MUELSYSE-FLOWER_CURE_POWER.title": "花粉栽培：疗愈",
+    "MUELSYSE-FLOWER_CURE_POWER.description": "受到攻击时，获得等同于层数的[gold]格挡[/gold]。每回合层数减半。",
+    "MUELSYSE-FLOWER_CURE_POWER.smartDescription": "受到攻击时，获得{Amount}点[gold]格挡[/gold]。每回合层数减半。",
+    "MUELSYSE-FLOWER_WATER_POWER.title": "花粉栽培：水培",
+    "MUELSYSE-FLOWER_WATER_POWER.description": "由[gold]水[/gold]造成的伤害提高等同于层数的点数。每回合层数减半。",
+    "MUELSYSE-FLOWER_WATER_POWER.smartDescription": "由[gold]水[/gold]造成的伤害提高{Amount}点。每回合层数减半。"
 }

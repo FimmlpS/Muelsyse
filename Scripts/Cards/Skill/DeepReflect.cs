@@ -38,24 +38,8 @@ public class DeepReflect : AbstractMuelsyseCard
             }
         }
 
-        IncreaseOwnCost(1);
+        EnergyCost.AddThisCombat(1);
         return Task.CompletedTask;
-    }
-
-    private void IncreaseOwnCost(int amount)
-    {
-        IncreaseCost(this, amount);
-
-        if (DeckVersion is { } deckVersion && deckVersion != this)
-        {
-            IncreaseCost(deckVersion, amount);
-        }
-    }
-
-    private static void IncreaseCost(CardModel card, int amount)
-    {
-        card.EnergyCost.SetCustomBaseCost(
-            card.EnergyCost.GetWithModifiers(CostModifiers.None) + amount);
     }
 
     protected override void OnUpgrade() => EnergyCost.UpgradeBy(-1);

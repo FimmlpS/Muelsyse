@@ -11,6 +11,7 @@ public static class CultivateCardPatch
     public static void Postfix(NCard __instance, PileType pileType, CardPreviewMode previewMode)
     {
         CultivateCardDisplay.Refresh(__instance);
+        DustCardDisplay.Refresh(__instance);
     }
 }
 
@@ -27,5 +28,6 @@ public static class CultivateOverlayResetPatch
     public static void Postfix(NCard __instance)
     {
         CultivateCardDisplay.Clear(__instance);
+        DustCardDisplay.Clear(__instance);
     }
 }

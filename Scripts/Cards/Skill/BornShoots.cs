@@ -1,4 +1,4 @@
-using BaseLib.Utils;
+﻿using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
 using MegaCrit.Sts2.Core.HoverTips;
@@ -12,7 +12,7 @@ namespace Muelsyse.Scripts.Cards.Skill;
 
 /// <summary>生枝: cultivates a card in hand and returns it there.</summary>
 [Pool(typeof(MuelsyseCardPool))]
-public class BornShoots : AbstractMuelsyseCard
+public class BornShoots : AbstractMuelsyseCard, ICultivateCard
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DynamicVar("Cultivate", 1)
@@ -28,7 +28,7 @@ public class BornShoots : AbstractMuelsyseCard
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        CardModel? target = await CultivateCmd.SelectTarget(choiceContext, Owner, this);
+        CardModel? target = await CultivateCmd.SelectTarget(choiceContext, Owner);
         if (target == null)
         {
             return;

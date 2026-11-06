@@ -113,22 +113,11 @@ public static class CultivateCmd
         {
             for (int i = 0; i < spread.Amount; i++)
             {
-                bonus.Apply(CultivateCalculator.Add(RandomPollen(player), 1));
+                bonus.Apply(CultivateCalculator.Add(PollenCmd.RandomFlower(player), 1));
             }
         }
 
         return bonus;
-    }
-
-    private static CultivateAim RandomPollen(Player player)
-    {
-        return player.RunState.Rng.CombatCardSelection.NextInt(4) switch
-        {
-            0 => CultivateAim.Spread,
-            1 => CultivateAim.Parasitism,
-            2 => CultivateAim.Cure,
-            _ => CultivateAim.WaterGrow
-        };
     }
 
     private static void AddMaterial(CultivateBonus bonus, CardModel material, int repetitions)
@@ -154,7 +143,11 @@ public static class CultivateCmd
         }
     }
 
-    /// <summary>Writes a computed bonus onto every permanent copy of the target card.</summary>
+    /// <summary>
+    /// Writes a computed bonus onto the target card for the rest of the combat. Cultivation never
+    /// touches the card's deck copy: there is no out-of-combat growth, so a cultivated card returns
+    /// to its printed values once the fight ends.
+    /// </summary>
     public static void Apply(CardModel target, CultivateBonus bonus)
     {
         if (bonus.IsEmpty)
@@ -162,16 +155,11 @@ public static class CultivateCmd
             return;
         }
 
-        foreach (CardModel card in Copies(target))
+        CultivateModifier? modifier = EnsureModifier(target);
+        if (modifier != null)
         {
-            CultivateModifier? modifier = EnsureModifier(card);
-            if (modifier == null)
-            {
-                continue;
-            }
-
             modifier.Add(bonus);
-            CultivateModifier.BakePermanentStats(card, bonus.BlockDelta, bonus.CostDelta);
+            CultivateModifier.BakeStats(target, bonus.BlockDelta, bonus.CostDelta);
         }
 
         RefreshVisuals(target);
@@ -185,11 +173,7 @@ public static class CultivateCmd
             return;
         }
 
-        foreach (CardModel card in Copies(target))
-        {
-            EnsureModifier(card)?.Add(aim, amount);
-        }
-
+        EnsureModifier(target)?.Add(aim, amount);
         RefreshVisuals(target);
     }
 
@@ -220,12 +204,22 @@ public static class CultivateCmd
         return card.GetModifier<CultivateModifier>();
     }
 
-    public static async Task<CardModel?> SelectTarget(PlayerChoiceContext choiceContext, Player player,
-        AbstractModel source)
+    /// <summary>Picks the card to cultivate.</summary>
+    /// <remarks>
+    /// Neither cultivation selection hands the game a <c>source</c> model, so the picked card goes
+    /// back into the hand as soon as the selection closes. With a source, the game keeps the card
+    /// out of its hand slot until that source reports <c>ExecutionFinished</c>, and registers one
+    /// restore per selection; cultivation runs two hand selections from the same card in a row, so
+    /// both restores fire together and add the same card node twice, leaving an empty holder (a
+    /// blank card in hand) behind. The restore is also too late for the material that the
+    /// cultivation consumes right after the selection — and for a card that ends the turn, it can
+    /// race with the end-of-turn discard.
+    /// </remarks>
+    public static async Task<CardModel?> SelectTarget(PlayerChoiceContext choiceContext, Player player)
     {
         IEnumerable<CardModel> picked = await CardSelectCmd.FromHand(
             choiceContext, player, new CardSelectorPrefs(TargetPrompt, 1),
-            card => card.Pile?.Type == PileType.Hand, source);
+            card => card.Pile?.Type == PileType.Hand, null!);
         return picked.FirstOrDefault();
     }
 
@@ -234,7 +228,12 @@ public static class CultivateCmd
         int amount, AbstractModel source, bool retain = false, bool doubleMain = false,
         PileType destination = PileType.Hand)
     {
-        if (target.Pile == null)
+        // A brand-new card only joins the hand when the hand is where it is going to stay. Cards
+        // that belong in another pile (举星 is planted straight into the draw pile) stay outside the
+        // piles during the selection — the overlay previews work off the model, not a hand node —
+        // and MoveToDestination puts them where they belong once the cultivation is resolved, so
+        // they never pass through the hand.
+        if (target.Pile == null && destination == PileType.Hand)
         {
             await CardPileCmd.AddGeneratedCardToCombat(target, PileType.Hand, player, CardPilePosition.Top);
         }
@@ -255,18 +254,35 @@ public static class CultivateCmd
         CultivateSession.Active = session;
         CultivateOverlay.Show(session);
 
+        bool stillOurs = true;
         IEnumerable<CardModel> picked;
         try
         {
+            // No source: the main material is back in the hand by the time it is consumed below.
             picked = await CardSelectCmd.FromHand(
                 choiceContext, player,
                 new CardSelectorPrefs(MainPrompt, 1) { RequireManualConfirmation = true },
-                card => materials.Contains(card), source);
+                card => materials.Contains(card), null!);
         }
         finally
         {
-            CultivateSession.Active = null;
-            CultivateOverlay.Dismiss();
+            // Only the session that still owns the shared overlay may tear it down: a cultivation
+            // abandoned by a save & load can resume at any moment, and it must not clear the
+            // session or the overlay of the cultivation the player is looking at right now.
+            stillOurs = CultivateSession.Active == session;
+            if (stillOurs)
+            {
+                CultivateSession.Active = null;
+                CultivateOverlay.Dismiss();
+            }
+        }
+
+        if (!stillOurs)
+        {
+            // The combat was rebuilt underneath this cultivation. The target belongs to the old
+            // fight, and the freshly loaded save already has it wherever it should be, so moving it
+            // anywhere now would duplicate it into a world that no longer exists.
+            return false;
         }
 
         CardModel? main = picked.FirstOrDefault();
@@ -329,19 +345,20 @@ public static class CultivateCmd
     private static async Task MoveToDestination(PlayerChoiceContext choiceContext, Player player, CardModel target,
         PileType destination)
     {
-        if (destination == PileType.Draw && target.Pile?.Type != PileType.Draw)
+        if (target.Pile?.Type == destination)
         {
-            await CardPileCmd.Add(target, PileType.Draw, CardPilePosition.Random);
+            return;
         }
+
+        if (target.Pile == null)
+        {
+            // Placed into a pile for the first time: go through the generated-card entry point so
+            // the combat history records it, then it lands at a random spot in the draw pile.
+            await CardPileCmd.AddGeneratedCardToCombat(target, destination, player, CardPilePosition.Random);
+            return;
+        }
+
+        await CardPileCmd.Add(target, destination, CardPilePosition.Random);
     }
 
-    private static IEnumerable<CardModel> Copies(CardModel card)
-    {
-        yield return card;
-        CardModel? deckVersion = card.DeckVersion;
-        if (deckVersion != null && deckVersion != card)
-        {
-            yield return deckVersion;
-        }
-    }
 }

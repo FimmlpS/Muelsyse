@@ -1,0 +1,9 @@
+BODY_SLAM.description = 造成你当前[gold]格挡[/gold]值的伤害。{InCombat:
+（造成{CalculatedDamage:diff()}点伤害）|}
+BODY_SLAM.title = 全身撞击
+FINISHER.description = 在这个回合内每打出过一张攻击牌，就造成{Damage:diff()}点伤害一次。{InCombat:
+（攻击{CalculatedHits:diff()}次）|}
+FINISHER.title = 终结技
+PERFECTED_STRIKE.description = 造成{CalculatedDamage:diff()}点伤害。
+你每有一张名字中含有“打击”的牌，伤害+{ExtraDamage:diff()}。
+PERFECTED_STRIKE.title = 完美打击

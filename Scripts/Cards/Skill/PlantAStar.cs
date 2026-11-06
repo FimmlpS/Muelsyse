@@ -1,4 +1,4 @@
-using BaseLib.Utils;
+﻿using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -6,6 +6,7 @@ using MegaCrit.Sts2.Core.HoverTips;
 using MegaCrit.Sts2.Core.Localization.DynamicVars;
 using Muelsyse.Scripts.Cards.Attack;
 using Muelsyse.Scripts.Enums;
+using Muelsyse.Scripts.Mechanics;
 using Muelsyse.Scripts.Mechanics.Cultivate;
 using Muelsyse.Scripts.Pools;
 
@@ -13,10 +14,8 @@ namespace Muelsyse.Scripts.Cards.Skill;
 
 /// <summary>种一颗星星: refills the hand, then plants a cultivated 举星 in the draw pile.</summary>
 [Pool(typeof(MuelsyseCardPool))]
-public class PlantAStar : AbstractMuelsyseCard
+public class PlantAStar : AbstractMuelsyseCard, ICultivateCard
 {
-    private const int FullHandSize = 10;
-
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DynamicVar("Cultivate", 6)
     ];
@@ -25,7 +24,7 @@ public class PlantAStar : AbstractMuelsyseCard
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [
         HoverTipFactory.FromKeyword(MuelsyseKeywords.Cultivate),
-        .. HoverTipFactory.FromCardWithCardHoverTips<LiftStar>()
+        .. HoverTipFactory.FromCardWithCardHoverTips<LiftStar>(IsUpgraded)
     ];
 
     public PlantAStar() : base(1, CardType.Skill, CardRarity.Rare, TargetType.None)
@@ -34,7 +33,7 @@ public class PlantAStar : AbstractMuelsyseCard
 
     protected override async Task OnPlay(PlayerChoiceContext choiceContext, CardPlay cardPlay)
     {
-        int missing = Math.Max(0, FullHandSize - PileType.Hand.GetPile(Owner).Cards.Count);
+        int missing = HandLimit.FreeSpace(Owner);
         if (missing > 0)
         {
             await CardPileCmd.Draw(choiceContext, missing, Owner);

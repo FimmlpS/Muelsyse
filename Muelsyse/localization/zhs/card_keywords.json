@@ -17,8 +17,6 @@
     "MUELSYSE-DISAPPEAR.description": "在对应回合结束后死亡。",
     "MUELSYSE-RESPAWN.title": "再现",
     "MUELSYSE-RESPAWN.description": "死亡后会在对应回合结束后以满血复活。",
-    "MUELSYSE-FIRST_WORD.title": "首言",
-    "MUELSYSE-FIRST_WORD.description": "打出一定次数后，该语句不再生效。",
     "MUELSYSE-CULTIVATE.title": "栽培",
     "MUELSYSE-CULTIVATE.description": "主原料：选择1张手牌。副原料：自动填充X张其他牌。每张原料强化目标牌1点攻击和格挡值。",
     "MUELSYSE-NUTRIENT.title": "养料",
@@ -26,5 +24,9 @@
     "MUELSYSE-EXHAUST_MATERIAL.title": "枯竭",
     "MUELSYSE-EXHAUST_MATERIAL.description": "作为栽培原料时不占用上限，携带的栽培效果会给予目标牌，栽培结束后消耗。",
     "MUELSYSE-DRY.title": "失肥",
-    "MUELSYSE-DRY.description": "这张牌不再可作为栽培原料。"
+    "MUELSYSE-DRY.description": "这张牌不再可作为栽培原料。",
+    "MUELSYSE-STROLL.title": "漫步",
+    "MUELSYSE-STROLL.description": "查看弃牌堆中至多X张随机牌，然后选择任意张洗入抽牌堆。",
+    "MUELSYSE-POLLEN.title": "花粉",
+    "MUELSYSE-POLLEN.description": "随机获得1种[gold]花粉栽培[/gold]效果：弥散、寄生、疗愈或水培。"
 }

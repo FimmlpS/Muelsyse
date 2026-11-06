@@ -21,6 +21,8 @@ public class CleanWaterPower : AbstractMuelsysePower
 
     public async Task Steal(PlayerChoiceContext choiceContext, Creature target)
     {
+        // The steal runs after the manifold's damage lands, so a dead target here is one the attack
+        // just killed: there is nothing left to take from.
         if (Owner.IsDead || target.IsDead || Amount <= 0)
         {
             return;
@@ -45,12 +47,11 @@ public class CleanWaterPower : AbstractMuelsysePower
             return;
         }
 
-        int total = _stolen.Values.Sum();
-        if (total > 0 && !Owner.IsDead)
-        {
-            await PowerCmd.Apply<StrengthPower>(choiceContext, Owner, -total, Owner, null);
-        }
-
+        // Nothing goes back to a target that died in the meantime, so its share must not be taken
+        // out of the manifold either. The manifold also only ever gives back Strength it still has:
+        // if something drained it below what it stole, the return stops at zero instead of running
+        // the manifold negative. The amount handed over is therefore decided first, and only that
+        // amount leaves the manifold.
         foreach ((Creature target, int amount) in _stolen)
         {
             if (target.IsDead)
@@ -59,11 +60,21 @@ public class CleanWaterPower : AbstractMuelsysePower
             }
 
             int strength = target.GetPower<StrengthPower>()?.Amount ?? 0;
-            int restore = Math.Min(amount, Math.Max(0, -strength));
-            if (restore > 0)
+            int give = Math.Min(amount, -strength);
+            if (give <= 0)
             {
-                await PowerCmd.Apply<StrengthPower>(choiceContext, target, restore, Owner, null);
+                continue;
             }
+
+            int available = Owner.IsDead ? 0 : Math.Max(0, Owner.GetPower<StrengthPower>()?.Amount ?? 0);
+            int restore = Math.Min(give, available);
+            if (restore <= 0)
+            {
+                continue;
+            }
+
+            await PowerCmd.Apply<StrengthPower>(choiceContext, Owner, -restore, Owner, null);
+            await PowerCmd.Apply<StrengthPower>(choiceContext, target, restore, Owner, null);
         }
 
         _stolen.Clear();

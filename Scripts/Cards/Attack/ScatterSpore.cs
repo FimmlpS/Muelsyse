@@ -24,7 +24,7 @@ public class ScatterSpore : AbstractMuelsyseCard, ICultivateExhaust, ICultivateU
         HoverTipFactory.FromKeyword(MuelsyseKeywords.ExhaustMaterial)
     ];
 
-    public ScatterSpore() : base(0, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
+    public ScatterSpore() : base(0, CardType.Attack, CardRarity.Uncommon, TargetType.AnyEnemy)
     {
     }
 

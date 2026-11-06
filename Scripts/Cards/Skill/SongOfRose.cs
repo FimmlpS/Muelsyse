@@ -1,4 +1,4 @@
-using BaseLib.Utils;
+﻿using BaseLib.Utils;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.GameActions.Multiplayer;
@@ -12,7 +12,7 @@ using Muelsyse.Scripts.Pools;
 namespace Muelsyse.Scripts.Cards.Skill;
 
 [Pool(typeof(MuelsyseCardPool))]
-public class SongOfRose : AbstractMuelsyseCard
+public class SongOfRose : AbstractMuelsyseCard, ICultivateCard
 {
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new DynamicVar("Cultivate", 2)
@@ -22,7 +22,7 @@ public class SongOfRose : AbstractMuelsyseCard
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [
         HoverTipFactory.FromKeyword(MuelsyseKeywords.Cultivate),
-        .. HoverTipFactory.FromCardWithCardHoverTips<WhiteRose>()
+        .. HoverTipFactory.FromCardWithCardHoverTips<WhiteRose>(IsUpgraded)
     ];
 
     public SongOfRose() : base(1, CardType.Skill, CardRarity.Basic, TargetType.None)

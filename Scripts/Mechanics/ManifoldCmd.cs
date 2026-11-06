@@ -1,3 +1,4 @@
+using System.Runtime.CompilerServices;
 using Godot;
 using MegaCrit.Sts2.Core.Commands;
 using MegaCrit.Sts2.Core.Entities.Creatures;
@@ -7,6 +8,7 @@ using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Models.Powers;
 using MegaCrit.Sts2.Core.Nodes.Combat;
 using MegaCrit.Sts2.Core.Nodes.Rooms;
+using Muelsyse.Scripts.Effects;
 using Muelsyse.Scripts.Monsters;
 using Muelsyse.Scripts.Powers;
 
@@ -56,6 +58,12 @@ public static class ManifoldCmd
     public static int AliveHp(Player player)
     {
         return Alive(player).Sum(manifold => manifold.CurrentHp);
+    }
+
+    /// <summary>Total health the living manifolds have already lost.</summary>
+    public static int AliveLostHp(Player player)
+    {
+        return Alive(player).Sum(manifold => Math.Max(0, manifold.MaxHp - manifold.CurrentHp));
     }
 
     public static int Threshold(Creature manifold)
@@ -221,20 +229,36 @@ public static class ManifoldCmd
         }
     }
 
-    private const float PetGapFromPlayer = 20f;
-    private const float PetSpacingFactor = 0.7f;
-
     /// <summary>
-    /// Each extra manifold stands this much higher than the previous one. The health bar and the
-    /// power icons are wider than the gap between two sprites, so a flat row makes neighbouring
-    /// UI overlap; the staggered heights keep each manifold's bars and powers in their own band.
+    /// Where the basic manifold stands relative to the player, taken from the first game: 230 pixels
+    /// to the right and 40 below her feet. Godot's y axis points down, the first game's pointed up,
+    /// so the vertical part of every offset below is flipped relative to the original numbers.
     /// </summary>
-    private const float ExtraPetLift = 40f;
+    private static readonly Vector2 BasicOffset = new(230f, 40f);
 
     /// <summary>
-    /// Places every manifold in a row to the right of the player, clear of the player's sprite,
-    /// re-enables their health bars and makes sure each one shows its attack intent. Extras are
-    /// lifted one step each so their UI does not sit on top of the previous manifold's.
+    /// The four places an extra manifold can occupy, in the first game's order: left, upper left,
+    /// above and upper right. The copies hover around Muelsyse instead of lining up on one side.
+    /// Empty slots are handed out in this order; once all four are taken, the manifold gets a random
+    /// position instead (see <see cref="RandomOffset"/>).
+    /// </summary>
+    private static readonly Vector2[] ExtraSlots =
+    [
+        new(-210f, 20f),
+        new(-170f, -260f),
+        new(-10f, -270f),
+        new(170f, -280f)
+    ];
+
+    /// <summary>Which of <see cref="ExtraSlots"/> a manifold owns, or -1 when it overflowed.</summary>
+    private static readonly ConditionalWeakTable<Creature, object> Slots = new();
+
+    /// <summary>The position picked for a manifold that found no free slot.</summary>
+    private static readonly ConditionalWeakTable<Creature, object> RandomOffsets = new();
+
+    /// <summary>
+    /// Places every manifold around the player, re-enables their health bars, makes sure each one
+    /// shows its attack intent and starts the water bubbles on it.
     /// </summary>
     public static void ArrangeManifolds(Player player)
     {
@@ -245,10 +269,8 @@ public static class ManifoldCmd
             return;
         }
 
-        List<Creature> extras = Extras(player).Where(extra => extra.IsAlive).ToList();
-
-        float x = playerNode.Position.X + playerNode.Visuals.Bounds.Size.X * 0.5f + PetGapFromPlayer;
-        float y = playerNode.Position.Y + 10f;
+        Vector2 origin = playerNode.Position;
+        Creature? basic = Basic(player);
 
         foreach (Creature manifold in Alive(player))
         {
@@ -258,16 +280,69 @@ public static class ManifoldCmd
                 continue;
             }
 
-            int extraIndex = extras.IndexOf(manifold);
-            float lift = extraIndex < 0 ? 0f : ExtraPetLift * (extraIndex + 1);
-
-            float width = node.Visuals.Bounds.Size.X;
-            node.Position = new Vector2(x + width * 0.5f, y - lift);
-            x += width * PetSpacingFactor;
+            Vector2 offset = manifold == basic ? BasicOffset : ExtraOffset(player, manifold);
+            node.Position = origin + offset;
 
             node.ToggleIsInteractable(true);
             ManifoldIntentDisplay.Attach(manifold);
+            BubbleVfx.Attach(manifold);
         }
+    }
+
+    /// <summary>
+    /// The offset for an extra manifold: its own slot if it already has one, otherwise the first
+    /// slot nobody alive is using, otherwise a random position. Slots of dead manifolds are simply
+    /// not in use any more, so they are handed out again without any explicit cleanup.
+    /// </summary>
+    private static Vector2 ExtraOffset(Player player, Creature manifold)
+    {
+        if (Slots.TryGetValue(manifold, out object? stored) && stored is int known)
+        {
+            return known >= 0 && known < ExtraSlots.Length ? ExtraSlots[known] : RandomOffset(manifold);
+        }
+
+        bool[] taken = new bool[ExtraSlots.Length];
+        foreach (Creature extra in Extras(player))
+        {
+            if (!extra.IsAlive || !Slots.TryGetValue(extra, out object? value)
+                || value is not int index || index < 0 || index >= taken.Length)
+            {
+                continue;
+            }
+
+            taken[index] = true;
+        }
+
+        for (int i = 0; i < taken.Length; i++)
+        {
+            if (taken[i])
+            {
+                continue;
+            }
+
+            Slots.AddOrUpdate(manifold, i);
+            return ExtraSlots[i];
+        }
+
+        Slots.AddOrUpdate(manifold, -1);
+        return RandomOffset(manifold);
+    }
+
+    /// <summary>
+    /// The first game dropped the manifolds that overflowed the four slots somewhere to the right of
+    /// the player, within 360 x 300 pixels. The position is picked once and kept, so the manifold
+    /// does not jump around every time the other manifolds are laid out.
+    /// </summary>
+    private static Vector2 RandomOffset(Creature manifold)
+    {
+        if (RandomOffsets.TryGetValue(manifold, out object? stored) && stored is Vector2 known)
+        {
+            return known;
+        }
+
+        Vector2 offset = new(240f + GD.Randf() * 360f, 100f - GD.Randf() * 300f);
+        RandomOffsets.AddOrUpdate(manifold, offset);
+        return offset;
     }
 
     /// <summary>

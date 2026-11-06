@@ -15,21 +15,21 @@ namespace Muelsyse.Scripts.Cards.Attack;
 [Pool(typeof(MuelsyseCardPool))]
 public class WaterStrikePro : AbstractMuelsyseCard
 {
-    private int _firstWord = 1;
+    public const string FirstWordKey = "FirstWord";
 
     protected override HashSet<CardTag> CanonicalTags => [CardTag.Strike];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
         new TogetherDamageVar(6, ValueProp.Move),
-        new DynamicVar("Water", 2)
+        new DynamicVar("Water", 2),
+        new DynamicVar(FirstWordKey, 1)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [MuelsyseKeywords.Together];
 
     protected override IEnumerable<IHoverTip> ExtraHoverTips => [
         HoverTipFactory.FromKeyword(MuelsyseKeywords.Together),
-        HoverTipFactory.FromKeyword(MuelsyseKeywords.Water),
-        HoverTipFactory.FromKeyword(MuelsyseKeywords.FirstWord)
+        HoverTipFactory.FromKeyword(MuelsyseKeywords.Water)
     ];
 
     public WaterStrikePro() : base(1, CardType.Attack, CardRarity.Common, TargetType.AnyEnemy)
@@ -38,7 +38,7 @@ public class WaterStrikePro : AbstractMuelsyseCard
 
     public override Task BeforeCombatStart()
     {
-        _firstWord = 1;
+        DynamicVars[FirstWordKey].BaseValue = 1;
         return Task.CompletedTask;
     }
 
@@ -52,9 +52,9 @@ public class WaterStrikePro : AbstractMuelsyseCard
                 .Execute(choiceContext);
         }
 
-        if (_firstWord > 0)
+        if (DynamicVars[FirstWordKey].IntValue > 0)
         {
-            _firstWord--;
+            DynamicVars[FirstWordKey].BaseValue -= 1;
             await LifeCircle.AddWater(choiceContext, Owner, DynamicVars["Water"].IntValue, this);
         }
     }

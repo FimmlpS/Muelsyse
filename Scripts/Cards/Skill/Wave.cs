@@ -29,5 +29,5 @@ public class Wave : AbstractMuelsyseCard
     {
     }
 
-    protected override void OnUpgrade() => DynamicVars["Water"].UpgradeValueBy(1);
+    protected override void OnUpgrade() => RemoveKeyword(CardKeyword.Ethereal);
 }

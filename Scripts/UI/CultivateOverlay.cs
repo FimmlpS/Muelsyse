@@ -1,6 +1,7 @@
 using Godot;
 using MegaCrit.Sts2.Core.Entities.Cards;
 using MegaCrit.Sts2.Core.Helpers;
+using MegaCrit.Sts2.Core.Logging;
 using MegaCrit.Sts2.Core.Models;
 using MegaCrit.Sts2.Core.Nodes.Cards;
 using MegaCrit.Sts2.Core.Nodes.Cards.Holders;
@@ -18,6 +19,8 @@ namespace Muelsyse.Scripts.UI;
 /// </summary>
 public partial class CultivateOverlay : Control
 {
+    private const string LayerName = "MuelsyseCultivateOverlay";
+
     private static readonly Vector2 PreviewScale = new(0.92f, 0.92f);
 
     private static CanvasLayer? _layer;
@@ -53,26 +56,84 @@ public partial class CultivateOverlay : Control
     {
         Dismiss();
 
-        _layer = new CanvasLayer { Layer = 10, Name = "MuelsyseCultivateOverlay" };
+        // The overlay belongs to the combat room it is drawn over. When the room is gone there is
+        // nothing to draw on — the cultivation itself still runs, it just has no preview — and
+        // attaching to the tree root would leave the UI on screen across scene changes.
+        if (NCombatRoom.Instance is not { } host || !GodotObject.IsInstanceValid(host))
+        {
+            return;
+        }
+
+        _layer = new CanvasLayer { Layer = 10, Name = LayerName };
         // Starts hidden: Attach positions the preview anchors and builds the cards, and only then
         // makes the overlay visible. Without this, the cards could be drawn for one frame at the
         // default anchor position before the first layout pass.
         _instance = new CultivateOverlay { Name = "CultivateOverlay", Visible = false };
         _layer.AddChildSafely(_instance);
+        host.AddChildSafely(_layer);
 
-        Node? host = NCombatRoom.Instance as Node
-                     ?? (Engine.GetMainLoop() as SceneTree)?.Root;
-        host?.AddChildSafely(_layer);
-
-        _instance.Attach(session);
+        // A broken preview must never take the cultivation down with it: the selection is the part
+        // the player actually needs.
+        try
+        {
+            _instance.Attach(session);
+        }
+        catch (Exception e)
+        {
+            Log.Warn($"Cultivate overlay failed to attach: {e}");
+            Dismiss();
+        }
     }
 
     public static void Dismiss()
     {
-        _instance?.Cleanup();
-        _layer?.QueueFreeSafely();
+        // After a save & load the Godot nodes the statics point at have been freed; touching them
+        // would throw, and the cultivation that triggered the cleanup would die with it.
+        if (GodotObject.IsInstanceValid(_instance))
+        {
+            _instance.Cleanup();
+        }
+
+        if (GodotObject.IsInstanceValid(_layer))
+        {
+            _layer.QueueFreeSafely();
+        }
+
         _instance = null;
         _layer = null;
+    }
+
+    /// <summary>
+    /// Drops every trace of an in-flight cultivation. A save & load rebuilds the combat room, but
+    /// the session, the overlay and the task awaiting the material selection all still refer to the
+    /// old fight — the task may never resume, so nothing else will ever dismiss what it left
+    /// behind. Starting a room always means nothing is being cultivated, so clear it all here.
+    /// </summary>
+    public static void Reset()
+    {
+        CultivateSession.Active = null;
+        Dismiss();
+        FreeStrayLayers();
+    }
+
+    /// <summary>
+    /// Frees any overlay layer still in the tree under this name, even when our static no longer
+    /// points at it (or points at a freed copy of it).
+    /// </summary>
+    private static void FreeStrayLayers()
+    {
+        if (Engine.GetMainLoop() is not SceneTree tree)
+        {
+            return;
+        }
+
+        foreach (Node node in tree.Root.FindChildren("*", nameof(CanvasLayer), true, false))
+        {
+            if (node is CanvasLayer layer && layer.Name == LayerName)
+            {
+                layer.QueueFreeSafely();
+            }
+        }
     }
 
     private void Attach(CultivateSession session)
@@ -106,10 +167,7 @@ public partial class CultivateOverlay : Control
     {
         _session = null;
         _numbers.Clear();
-        if (IsInsideTree())
-        {
-            this.QueueFreeSafely();
-        }
+        this.QueueFreeSafely();
     }
 
     private void UpdateSize()
@@ -119,8 +177,11 @@ public partial class CultivateOverlay : Control
 
     public override void _Process(double delta)
     {
-        if (_session == null)
+        if (_session == null || CultivateSession.Active != _session)
         {
+            // The session was cleared from under us (a save & load rebuilt the combat, or a newer
+            // cultivation took the screen): this overlay is stale and must not linger on screen.
+            Dismiss();
             return;
         }
 

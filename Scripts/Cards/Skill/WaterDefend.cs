@@ -15,28 +15,23 @@ namespace Muelsyse.Scripts.Cards.Skill;
 [Pool(typeof(MuelsyseCardPool))]
 public class WaterDefend : AbstractMuelsyseCard
 {
-    private int _firstWord;
+    public const string FirstWordKey = "FirstWord";
 
     public override bool GainsBlock => true;
 
     protected override HashSet<CardTag> CanonicalTags => [CardTag.Defend];
 
     protected override IEnumerable<DynamicVar> CanonicalVars => [
-        new BlockVar(5, ValueProp.Move)
+        new BlockVar(5, ValueProp.Move),
+        new DynamicVar(FirstWordKey, 0)
     ];
 
     public override IEnumerable<CardKeyword> CanonicalKeywords => [MuelsyseKeywords.Together];
 
-    protected override IEnumerable<IHoverTip> ExtraHoverTips => IsUpgraded
-        ? [
-            HoverTipFactory.FromKeyword(MuelsyseKeywords.Together),
-            HoverTipFactory.FromKeyword(MuelsyseKeywords.Water),
-            HoverTipFactory.FromKeyword(MuelsyseKeywords.FirstWord)
-        ]
-        : [
-            HoverTipFactory.FromKeyword(MuelsyseKeywords.Together),
-            HoverTipFactory.FromKeyword(MuelsyseKeywords.Water)
-        ];
+    protected override IEnumerable<IHoverTip> ExtraHoverTips => [
+        HoverTipFactory.FromKeyword(MuelsyseKeywords.Together),
+        HoverTipFactory.FromKeyword(MuelsyseKeywords.Water)
+    ];
 
     public WaterDefend() : base(1, CardType.Skill, CardRarity.Basic, TargetType.Self)
     {
@@ -44,7 +39,7 @@ public class WaterDefend : AbstractMuelsyseCard
 
     public override Task BeforeCombatStart()
     {
-        _firstWord = IsUpgraded ? 1 : 0;
+        DynamicVars[FirstWordKey].BaseValue = IsUpgraded ? 1 : 0;
         return Task.CompletedTask;
     }
 
@@ -52,9 +47,9 @@ public class WaterDefend : AbstractMuelsyseCard
     {
         await CreatureCmd.GainBlock(Owner.Creature, DynamicVars.Block, cardPlay);
 
-        if (_firstWord > 0)
+        if (DynamicVars[FirstWordKey].IntValue > 0)
         {
-            _firstWord--;
+            DynamicVars[FirstWordKey].BaseValue -= 1;
             await LifeCircle.AddWater(choiceContext, Owner, 1, this);
         }
     }
@@ -62,6 +57,6 @@ public class WaterDefend : AbstractMuelsyseCard
     protected override void OnUpgrade()
     {
         DynamicVars.Block.UpgradeValueBy(3);
-        _firstWord = 1;
+        DynamicVars[FirstWordKey].BaseValue = 1;
     }
 }
